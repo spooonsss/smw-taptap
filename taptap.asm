@@ -694,7 +694,7 @@ State:              PHY
 OkayHehs:           PLA
 
 NotDS:              STA !TIME2ROLLNSTUMBLE,x
-                    LDA .w !B6,y
+                    LDA.w !B6,y
                     BPL NoDizzz
                     EOR #$FF
                     INC A
@@ -765,26 +765,26 @@ OKReturn2:          RTS
 OnYoshi:            PHX
                     LDX $18E2|!Base2
                     LDA #$10
-                    STA !163D,x
+                    STA !163E-1,x
                     LDA #$03
                     STA $1DFA|!Base2
                     LDA #$13
                     STA $1DFC|!Base2
                     LDA #$02
-                    STA !C1,x
+                    STA !C2-1,x
                     STZ $187A|!Base2
                     STZ $0DC1|!Base2
                     LDA #$C0
                     STA $7D
                     STZ $7B
-                    LDY !157B,x
+                    LDY !157C-1,x
                     PHX
 		    TYX
                     LDA YoshiSpeed,x
                     PLX
-                    STA !B5,x
-                    STZ !1593,x
-                    STZ !151B,x
+                    STA !B6-1,x
+                    STZ !1594-1,x
+                    STZ !151C-1,x
                     STZ $18AE|!Base2
                     LDA #$30
                     STA $1497|!Base2
@@ -805,7 +805,7 @@ TXY
 LDA !1662,x
 AND #$3F
 TAX
-LDA .w !E4,y
+LDA.w !E4,y
 SEC
 SBC #$0C		; Starting X pos of sprite clipping = sprite center position - $0C ($0C pixels to the left)
 STA $04
@@ -814,7 +814,7 @@ SBC #$00
 STA $0A
 LDA #$2C                ; Width of sprite clipping
 STA $06
-LDA .w !D8,y
+LDA.w !D8,y
 SEC
 SBC #$2C                ; Starting Y pos of sprite clipping = sprite center position - $2C ($2C pixels above)
 STA $05
