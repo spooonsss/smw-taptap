@@ -14,22 +14,22 @@ prot gfx
 
 !CANSPINJUMPONTAP = $00 ; Change to $01 if you want to disable this.
 
-!SECONDARYSPRITESTATE = $C2
-!SPRITESTATE = $14C8
-!FEETVERTDIR = $1504
-!INAIRFLAG = $1510
-!BODYVERTDIR = $151C
-!TIME2ROLLNSTUMBLE = $1528
-!TEMPDIR = $1534	
-!XSPEEDTIMER = $154C
-!TURNTIMER = $1558
-!NOHURT = $1564
-!WAITBEFOREJMPANDDEATH = $1570
-!DIR = $157C
-!GRNDCHK = $1588
-!SOMETIMER = $15AC
-!GFXPTR = $1602
-!OTHERSTUFF = $160E
+!SECONDARYSPRITESTATE = !C2
+!SPRITESTATE = !14C8
+!FEETVERTDIR = !1504
+!INAIRFLAG = !1510
+!BODYVERTDIR = !151C
+!TIME2ROLLNSTUMBLE = !1528
+!TEMPDIR = !1534	
+!XSPEEDTIMER = !154C
+!TURNTIMER = !1558
+!NOHURT = !1564
+!WAITBEFOREJMPANDDEATH = !1570
+!DIR = !157C
+!GRNDCHK = !1588
+!SOMETIMER = !15AC
+!GFXPTR = !1602
+!OTHERSTUFF = !160E
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; sprite init JSL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -103,12 +103,12 @@ TapTapStill:        PLX
                     LDA AboutToFall,y
                     STA !GFXPTR,x
                     LDA AboutToFallXSp,y
-                    STA $B6,x
-                    STZ $AA,x
+                    STA !B6,x
+                    STZ !AA,x
                     JSR SprSprInteraction
                     DEC !TIME2ROLLNSTUMBLE,x
                     BPL RejoiceSt
-                    STZ $B6,x
+                    STZ !B6,x
                     STZ !SECONDARYSPRITESTATE,x
                     STZ !INAIRFLAG,x
                     STZ !GFXPTR,x
@@ -195,7 +195,7 @@ StopIt:             LDA !GRNDCHK,x
                     STA !SECONDARYSPRITESTATE,x
                     LDA #$48
                     STA !TIME2ROLLNSTUMBLE,x
-                    STZ $B6,x
+                    STZ !B6,x
                     STZ !FEETVERTDIR,x
                     %SubHorzPos()
                     TYA
@@ -213,7 +213,7 @@ LDA !GRNDCHK,x
 AND #$08
 BEQ +
 LDA #$1C
-STA $AA,x
+STA !AA,x
 +
 RTS
 
@@ -227,20 +227,20 @@ ExtraDisp2:
 db $00,$FF
 
 DiffSt:
-LDA $B6,x
+LDA !B6,x
 CMP #$80
 ROL A
 AND #$01
 EOR #$01
 STA !DIR,x
 TAY
-LDA $E4,x
+LDA !E4,x
 CLC
 ADC ExtraDisp1,y
-STA $E4,x
-LDA $14E0,x
+STA !E4,x
+LDA !14E0,x
 ADC ExtraDisp2,y
-STA $14E0,x
+STA !14E0,x
 LDA #$05
 STA !SECONDARYSPRITESTATE,x
 LDA #$7F
@@ -278,7 +278,7 @@ BRA NoDizShit
 
 DifYSpeed:
 LDA #$C0
-STA $AA,x
+STA !AA,x
 BRA NoDifAtAll
 
 StoreDizShit:
@@ -286,10 +286,10 @@ LDA #$30
 STA !WAITBEFOREJMPANDDEATH,x
 
 NoDizShit:
-STZ $AA,x
+STZ !AA,x
 
 NoDifAtAll:
-STZ $B6,x
+STZ !B6,x
 STZ !GFXPTR,x
 BRA OKNoShit
 
@@ -335,7 +335,7 @@ SEP #$20
 BCS OKRETURSNN
 LDA #$30
 STA !WAITBEFOREJMPANDDEATH,x
-STZ $B6,x
+STZ !B6,x
 STZ !GFXPTR,x
 RTS
 
@@ -375,12 +375,12 @@ CLC
 ADC !DIR,x
 TAY
 LDA TapXSpeed,y
-STA $B6,x
+STA !B6,x
 LDA #$A8
-STA $AA,x
+STA !AA,x
 INC !SECONDARYSPRITESTATE,x
 LDA #$08
-STA $1DFC
+STA $1DFC|!Base2
 LDA #$2C
 STA !SOMETIMER,x
 LDA #$0A
@@ -391,9 +391,9 @@ RTS
 
 SpecialState:
 LDA #$0F
-STA $1887
+STA $1887|!Base2
 LDA #$09
-STA $1DFC
+STA $1DFC|!Base2
 STZ !SECONDARYSPRITESTATE,x
 STZ !GFXPTR,x
 RTS
@@ -430,15 +430,15 @@ EOR #$FF
 INC A
 
 DontXORSpd:
-STA $B6,x
+STA !B6,x
 LDA !XSPEEDTIMER,x
 AND #$1F
 CMP #$01
 BNE IsTurningAround
 LDA #$0F
-STA $1887
+STA $1887|!Base2
 LDA #$09
-STA $1DFC
+STA $1DFC|!Base2
 
 IsTurningAround:
 RTS
@@ -449,7 +449,7 @@ STA !XSPEEDTIMER,x
 RTS
 
 NoXSpeed:
-STZ $B6,x
+STZ !B6,x
 RTS
 
 ;--------------------------;
@@ -499,7 +499,7 @@ RTS
 
 Jump:
 LDA #$E4
-STA $AA,x
+STA !AA,x
 STZ !INAIRFLAG,x
 RTS
 
@@ -519,7 +519,7 @@ TurnIfApplicable:    LDA !GRNDCHK,x
                      ASL A
                      BPL HasSpeed
 
-HasNoSpeed:          STZ $B6,x
+HasNoSpeed:          STZ !B6,x
                      LDA !TURNTIMER,x
                      BNE TurnAroundMode
                      %SubHorzPos()
@@ -553,15 +553,15 @@ HasSpeed:            RTS
 ;--------------------------;
 
 Map16Chk:
-LDA $E4,x           ; Get X low position of sprite
+LDA !E4,x           ; Get X low position of sprite
 STA $02             ; store into $02
-LDA $14E0,X         ;
+LDA !14E0,X         ;
 STA $03	
-LDA $D8,x           ; Get y low position of sprite
+LDA !D8,x           ; Get y low position of sprite
 CLC
 ADC #$10
 STA $00             ; Store into $00
-LDA $14D4,x         ; Get y hi
+LDA !14D4,x         ; Get y hi
 ADC #$00
 STA $01             ; Store into $01
 
@@ -600,14 +600,14 @@ STA $06
 CODE_01D989:
 LDA #$7E                
 STA $07                   
-LDX $15E9               ; X = Sprite index 
+LDX $15E9|!Base2               ; X = Sprite index 
 LDA [$05]                 
-STA $1693               
+STA $1693|!Base2               
 INC $07                   
 PLY
 LDA [$05]     
 XBA
-LDA $1693
+LDA $1693|!Base2
 LDY #$1E
 
 Map16Loop:
@@ -621,9 +621,9 @@ BPL Map16Loop
 RTS
 
 KillTapTap:
-LDA $1686,x
+LDA !1686,x
 ORA #$80
-STA $1686,x
+STA !1686,x
 LDA #$02
 STA !SECONDARYSPRITESTATE,x
 LDA #$14
@@ -665,13 +665,13 @@ State:              PHY
                     PHX
                     TYX
                     STZ !SPRITESTATE,x
-                    LDA $E4,x
+                    LDA !E4,x
                     STA $9A
-                    LDA $14E0,x
+                    LDA !14E0,x
                     STA $9B
-                    LDA $D8,x
+                    LDA !D8,x
                     STA $98
-                    LDA $14D4,x
+                    LDA !14D4,x
                     STA $99
                     PHB
                     LDA #$02
@@ -694,7 +694,7 @@ State:              PHY
 OkayHehs:           PLA
 
 NotDS:              STA !TIME2ROLLNSTUMBLE,x
-                    LDA $00B6,y
+                    LDA .w !B6,y
                     BPL NoDizzz
                     EOR #$FF
                     INC A
@@ -717,7 +717,7 @@ OKNOTFAST2:         LSR #2
                     TAY
                     LDA XSpeed2,y
 
-NoDizz:             STA $B6,x
+NoDizz:             STA !B6,x
                     LDA !SECONDARYSPRITESTATE,x
                     CMP #$05
                     BEQ OtherSituation
@@ -739,8 +739,8 @@ MarSprInteraction:  JSL $03B664
 		    JSR GetSpriteClipping
 		    JSL $03B72B
 		    BCC OKReturn2
-		    LDA $140D
-                    ORA $187A
+		    LDA $140D|!Base2
+                    ORA $187A|!Base2
                     BEQ HurtHimThen
                     LDA #!CANSPINJUMPONTAP
                     BNE HurtHimThen
@@ -750,44 +750,44 @@ MarSprInteraction:  JSL $03B664
                     JSL $01AA33
                     JSL $01AB99
                     LDA #$02
-                    STA $1DF9
+                    STA $1DF9|!Base2
                     LDA #$10
                     STA !NOHURT,x
                     BRA OKReturn2
 
 HurtHimThen:	    LDA !NOHURT,x
                     BNE OKReturn2
-                    LDA $187A
+                    LDA $187A|!Base2
                     BNE OnYoshi
                     JSL $00F5B7
 OKReturn2:          RTS
 
 OnYoshi:            PHX
-                    LDX $18E2
+                    LDX $18E2|!Base2
                     LDA #$10
-                    STA $163D,x
+                    STA !163D,x
                     LDA #$03
-                    STA $1DFA
+                    STA $1DFA|!Base2
                     LDA #$13
-                    STA $1DFC
+                    STA $1DFC|!Base2
                     LDA #$02
-                    STA $C1,x
-                    STZ $187A
-                    STZ $0DC1
+                    STA !C1,x
+                    STZ $187A|!Base2
+                    STZ $0DC1|!Base2
                     LDA #$C0
                     STA $7D
                     STZ $7B
-                    LDY $157B,x
+                    LDY !157B,x
                     PHX
 		    TYX
                     LDA YoshiSpeed,x
                     PLX
-                    STA $B5,x
-                    STZ $1593,x
-                    STZ $151B,x
-                    STZ $18AE
+                    STA !B5,x
+                    STZ !1593,x
+                    STZ !151B,x
+                    STZ $18AE|!Base2
                     LDA #$30
-                    STA $1497
+                    STA $1497|!Base2
                     PLX
                     RTS                    
 
@@ -802,23 +802,23 @@ GetSpriteClipping:
 PHY
 PHX
 TXY
-LDA $1662,x
+LDA !1662,x
 AND #$3F
 TAX
-LDA $00E4,y
+LDA .w !E4,y
 SEC
 SBC #$0C		; Starting X pos of sprite clipping = sprite center position - $0C ($0C pixels to the left)
 STA $04
-LDA $14E0,y
+LDA !14E0,y
 SBC #$00
 STA $0A
 LDA #$2C                ; Width of sprite clipping
 STA $06
-LDA $00D8,y
+LDA .w !D8,y
 SEC
 SBC #$2C                ; Starting Y pos of sprite clipping = sprite center position - $2C ($2C pixels above)
 STA $05
-LDA $14D4,y
+LDA !14D4,y
 SBC #$00
 STA $0B
 LDA #$38                ; Height of sprite clipping
@@ -840,7 +840,7 @@ INC !WAITBEFOREJMPANDDEATH,x
 OKTHENNOT:
 LDA !WAITBEFOREJMPANDDEATH,x
 BEQ Erase
-STZ $B6,x
+STZ !B6,x
 JSR YSpeedDeterm
 JSR GenerateSomeSmoke
 JSL $01802A
@@ -849,10 +849,10 @@ JMP Graphico ; (JSR,RTS)
 Erase:
 STZ !SPRITESTATE,x
 LDA #$FF
-STA $1493
-INC $13C6
+STA $1493|!Base2
+INC $13C6|!Base2
 LDA #$0B
-STA $1DFB
+STA $1DFB|!Base2
 Roteb:
 RTS
 
@@ -861,7 +861,7 @@ LDA !WAITBEFOREJMPANDDEATH,x
 LSR #3
 TAY
 LDA YSpeedPer8Frms,y
-STA $AA,x
+STA !AA,x
 RTS
 
 GenerateSomeSmoke:
@@ -890,16 +890,16 @@ LDY #$03
 
 NotSoD:
 LDA #$17
-STA $1DFC
+STA $1DFC|!Base2
 
 SetShooterSmoke:
-LDA $14E0,x
+LDA !14E0,x
 XBA
 PHY
 TYA
 ASL A
 TAY
-LDA $E4,x
+LDA !E4,x
 REP #$20
 CLC
 ADC XDisp,y
@@ -912,14 +912,14 @@ SEP #$20
 PLY
 BCS NoGen
 STA $00
-LDA $14D4,x
+LDA !14D4,x
 XBA
 LDA !WAITBEFOREJMPANDDEATH,x
 LSR #4
 PHY
 ASL A
 TAY
-LDA $D8,x
+LDA !D8,x
 REP #$20
 SEC
 SBC StayAboveLava,y
@@ -931,13 +931,13 @@ PLA
 SEP #$20
 PLY
 BCS NoGen
-STA $17C4,y
+STA $17C4|!Base2,y
 LDA #$17
-STA $17CC,y
+STA $17CC|!Base2,y
 LDA $00
-STA $17C8,y
+STA $17C8|!Base2,y
 LDA #$01
-STA $17C0,y
+STA $17C0|!Base2,y
 NoGen:
 RTS
 
@@ -1148,7 +1148,7 @@ LOOP_START_2:       PHX
                     CPX #$04
                     BCS NoFeetJmp
                     PHX
-                    LDX $15E9
+                    LDX $15E9|!Base2
                     LDA !SECONDARYSPRITESTATE,x
                     PLX
                     CMP #$03
@@ -1188,11 +1188,11 @@ TreFiori1:          PLA
                     LDA $00                 ; \ tile x position = sprite x location ($00) + tile displacement
                     CLC                     ; |
                     ADC FEET_HORZ_DISP,x ; |
-                    STA $0300,y             ; /
+                    STA $0300|!Base2,y             ; /
                     LDA $01                 ; |
                     CLC                     ; | tile y position = sprite y location ($01) + til e displacement
                     ADC FEET_VERT_DISP,x ; |
-                    STA $0301,y             ; /
+                    STA $0301|!Base2,y             ; /
                     PLX
                     PHX
                     LDA $03
@@ -1205,7 +1205,7 @@ TreFiori1:          PLA
                     TAX
                     PLA
                     LDA FEET_TILEMAP,x   ; |
-                    STA $0302,y             ; /
+                    STA $0302|!Base2,y             ; /
                     PLX
                     PHX
                     LDA $08
@@ -1216,8 +1216,8 @@ TreFiori1:          PLA
                     CLC
                     ADC $01,s
                     PHA
-		    LDX $15E9
-		    LDA $15F6,x
+		    LDX $15E9|!Base2
+		    LDA !15F6,x
                     CLC
                     ADC $01,s
                     PLX
@@ -1226,7 +1226,7 @@ TreFiori1:          PLA
                     ORA $64
                     PHY
                     PHX
-                    LDX $15E9
+                    LDX $15E9|!Base2
                     LDY !SECONDARYSPRITESTATE,x
                     PLX
                     CPY #$03
@@ -1238,7 +1238,7 @@ TreFiori1:          PLA
 TreFiori2:          PLY
                     PHY
                     PHX
-                    LDX $15E9
+                    LDX $15E9|!Base2
                     LDY !SECONDARYSPRITESTATE,x
                     PLX
                     CPY #$02
@@ -1246,7 +1246,7 @@ TreFiori2:          PLY
                     AND #$CF
 
 Prior1:		    PLY
-                    STA $0303,y             ; store tile properties
+                    STA $0303|!Base2,y             ; store tile properties
                     BRA ITIPMYHATTOTHENEWCONSTITUTION
 
 NoFeet:             LDA $05
@@ -1265,7 +1265,7 @@ NoFeet:             LDA $05
                     LDA $00                 ; \ tile x position = sprite x location ($00) + tile displacement
                     CLC                     ; |
                     ADC TAPTAP_HORZ_DISP,x ; |
-                    STA $0300,y             ; /
+                    STA $0300|!Base2,y             ; /
                     PLX
                     PHX
                     LDA $06
@@ -1287,19 +1287,19 @@ NoFeet:             LDA $05
                     LDX $07
                     SEC
                     SBC EXTRA_ADJUSTMENT,x
-                    STA $0301,y             ; /
+                    STA $0301|!Base2,y             ; /
                     PLX
                     PHX
                     LDA TAPTAP_TILEMAP,x   ; |
 	      	    CLC
 		    ADC !TEMP_FOR_TILE
-                    STA $0302,y             ; /
+                    STA $0302|!Base2,y             ; /
                     PHX
                     LDA $06
                     ROR #2
                     PHA
-		    LDX $15E9
-		    LDA $15F6,x
+		    LDX $15E9|!Base2
+		    LDA !15F6,x
                     CLC
                     ADC $01,s
                     PLX
@@ -1308,7 +1308,7 @@ NoFeet:             LDA $05
                     ORA $02
                     PHY
                     PHX
-                    LDX $15E9
+                    LDX $15E9|!Base2
                     LDY !SECONDARYSPRITESTATE,x
                     PLX
                     CPY #$02
@@ -1316,7 +1316,7 @@ NoFeet:             LDA $05
                     AND #$CF
 
 Prior2:		    PLY
-                    STA $0303,y             ; store tile properties
+                    STA $0303|!Base2,y             ; store tile properties
 
 ITIPMYHATTOTHENEWCONSTITUTION:
                     PLX                     ; \ pull, current tile
@@ -1326,7 +1326,7 @@ ITIPMYHATTOTHENEWCONSTITUTION:
                     LSR A
                     TAY
                     LDA #$02
-                    STA $0460,y
+                    STA $0460|!Base2,y
                     PLY
                     INY #4
                     INX                     ; | go to next tile of frame and loop
