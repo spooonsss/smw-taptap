@@ -1381,6 +1381,8 @@ get_dynamic_slot:
 	STA !SlotPointer	;store to pointer to be used at transfer time
 	SEP #$20	;8bit store
 	PHB : PLA
+    ; PHB : PLA
+	LDA.b #gfx/$10000
 	STA !SlotBank	;store bank to 24bit pointer
 
 	PHX		;This is how I made your boi a routine
