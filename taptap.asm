@@ -1,3 +1,6 @@
+; pixi\pixi.exe -d -k -w -l list.txt SMW-taptap.smc
+; type pixi\sprites\taptap\taptap.asm.wla > SMW-taptap.cpu.sym
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Tap-Tap the Red-Nose (SMW2)
 ; By Roy
@@ -67,7 +70,12 @@ SPRITE_CODE_START:  JSR TAPTAP_GRAPHICS             ; Run GFX routine
 		    LDA $9D
 		    BNE OKReturn
                     
+
+            LDA !SECONDARYSPRITESTATE,x
+            CMP #$02 ; taptap is dying; don't despawn
+            BEQ +
             %SubOffScreen()
+            +
                     
 		    LDA !WAITBEFOREJMPANDDEATH,x
 		    BEQ OKNoDecrement
