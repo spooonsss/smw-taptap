@@ -641,7 +641,7 @@ dw $0004,$0005,$0159,$015A,$015B,$01D2,$01D3,$01D4,$01D5,$01D6,$01D7,$01FB,$01FC
 ; Sprite <-> Sprite Interact;
 ;---------------------------;
 
-SprSprInteraction:  LDY #$0B
+SprSprInteraction:  LDY #!SprSize-1
 
 SprLp:              LDA !SPRITESTATE,y
                     CMP #$09
