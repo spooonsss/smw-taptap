@@ -14,6 +14,10 @@ prot gfx
 
 !CANSPINJUMPONTAP = $00 ; Change to $01 if you want to disable this.
 
+!ScreenShake = 0
+
+
+
 !SECONDARYSPRITESTATE = !C2
 !SPRITESTATE = !14C8
 !FEETVERTDIR = !1504
@@ -390,8 +394,10 @@ OKRETURNN:
 RTS
 
 SpecialState:
+if !ScreenShake
 LDA #$0F
 STA $1887|!Base2
+endif
 LDA #$09
 STA $1DFC|!Base2
 STZ !SECONDARYSPRITESTATE,x
