@@ -1386,8 +1386,6 @@ get_dynamic_slot:
 	ADC !Temp	;add frame offset	
 	STA !SlotPointer	;store to pointer to be used at transfer time
 	SEP #$20	;8bit store
-	PHB : PLA
-    ; PHB : PLA
 	LDA.b #gfx/$10000
 	STA !SlotBank	;store bank to 24bit pointer
 
@@ -1406,9 +1404,9 @@ get_dynamic_slot:
 	ASL A
 	ASL A
 if !SA1 == 1
-	CLC : ADC #$8000	;add 8000, base address of buffer
+	CLC : ADC #$8000         ;add 8000, base address of buffer: !DSX_BUFFER = $418000 from sa1.asm
 else
-	CLC : ADC #$0B44	;add 0B44, base address of buffer	
+	CLC : ADC #$0B44         ;add 0B44, base address of buffer: !dsx_buffer = $7F0B44 from dsx.asm
 endif
 	STA !SlotDestination	;destination address in the buffer
 	SEP #$20
@@ -1424,16 +1422,9 @@ if !SA1 == 1
 ;set destination RAM address
 	REP #$20
 	LDY #$C4
-	STY $2230
+	STY $2230                ; DMA settings
 	LDA.w !SlotDestination
 	STA $2235	;16bit RAM dest
-	        
-	         	;set 7F as bank
-
-;common DMA settings
-	         	;1 reg only
-	        	;to 2180, RAM write/read
-	         
 
 ;first line
 	LDA !SlotPointer
