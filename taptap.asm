@@ -604,7 +604,7 @@ ADC $01
 STA $06                   
 
 CODE_01D989:
-LDA #$7E                
+LDA.b #!BankA>>16
 STA $07                   
 LDX $15E9|!Base2               ; X = Sprite index 
 LDA [$05]                 
